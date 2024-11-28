@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct IdeasApp: App {
+    
+    @State private var store = IdeasStore()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+            IdeasView()
+        }.environment(store)
     }
 }
