@@ -10,11 +10,12 @@ import SwiftUI
 @main
 struct IdeasApp: App {
     
-    @State private var store = IdeasStore()
+    @State private var store = IdeasStore.mocked
     
     var body: some Scene {
         WindowGroup {
             IdeasView()
-        }.environment(store)
+        }
+        .environment(store)
     }
 }

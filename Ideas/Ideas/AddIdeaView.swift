@@ -42,6 +42,7 @@ struct AddIdeaView: View {
                     Button("Save") {
                         if let idea = idea {
                             if let index = store.ideas.firstIndex(where: { $0.id == idea.id }) {
+                                // TODO: idea object is copied, structs are not easy to copy, so we need to find a better way
                                 store.ideas[index] = Idea(
                                     id: idea.id,
                                     title: title,

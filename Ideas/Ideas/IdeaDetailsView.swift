@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-private let mockData = Idea(title: "Remove background from photo", description: "Remove background from photo using AI Remove background from photo using AI")
-
 struct IdeaDetailsView: View {
     
+    // TODO: although we do not mutate `idea` property, it is defined as binding because we want to get updates of this property when it is edited from AddIdeaView
     @Binding var idea: Idea
     @State private var editableIdea: Idea?
     
@@ -21,7 +20,12 @@ struct IdeaDetailsView: View {
     
     var body: some View {
         List {
-            Text(idea.description)
+            Section {
+                Text(idea.title)
+                Text(idea.description)
+            } header: {
+                Text("Description")
+            }
         }
         .navigationTitle(idea.title)
         .navigationBarTitleDisplayMode(.inline)
@@ -42,6 +46,6 @@ struct IdeaDetailsView: View {
 
 #Preview {
     NavigationStack {
-        IdeaDetailsView(idea: .constant(mockData))
+        IdeaDetailsView(idea: .constant(MockData.sampleIdea))
     }
 }

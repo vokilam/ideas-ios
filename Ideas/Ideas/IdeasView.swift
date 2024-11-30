@@ -8,11 +8,6 @@
 import Foundation
 import SwiftUI
 
-private let mockData = [
-    Idea(title: "Remove background from photo", description: "Remove background from photo using AI"),
-    Idea(title: "Remove background from photo", description: "Remove background from photo using AI"),
-]
-
 struct IdeasView: View {
     
     @Environment(IdeasStore.self) private var store
@@ -32,9 +27,9 @@ struct IdeasView: View {
                     List {
                         ForEach(store.ideas) { idea in
                             NavigationLink {
-//                                LazyView(
+                                LazyView(
                                     IdeaDetailsView(idea: .constant(idea))
-//                                )
+                                )
                             } label: {
                                 Text(idea.title)
                             }
@@ -64,5 +59,5 @@ struct IdeasView: View {
 }
 
 #Preview {
-    IdeasView().environment(IdeasStore())
+    IdeasView().environment(IdeasStore.mocked)
 }

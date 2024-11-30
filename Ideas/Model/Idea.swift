@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Idea: Identifiable {
+struct Idea: Identifiable, Equatable {
     let id: String
     let title: String
     let description: String

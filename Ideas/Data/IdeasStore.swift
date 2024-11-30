@@ -11,3 +11,11 @@ import Foundation
 class IdeasStore {
     var ideas = [Idea]()
 }
+
+extension IdeasStore {
+    static let mocked = {
+        let store = IdeasStore()
+        store.ideas = MockData.ideas
+        return store
+    }()
+}
