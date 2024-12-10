@@ -13,6 +13,7 @@ struct IdeasView: View {
     @Environment(IdeasStore.self) private var store
     
     @State private var showAddIdeaView = false
+    @State private var selectedIdea: Idea?
     
     init() {
         print("IdeasView body")
@@ -38,29 +39,41 @@ struct IdeasView: View {
                             } label: {
                                 Text(idea.title)
                             }
-                        }
-                        .onDelete { indexSet in
-                            store.remove(atOffset: indexSet)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    store.remove(idea: idea)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                                Button {
+                                    selectedIdea = idea
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                            }
                         }
                     }
                     
                 }
             }
             .navigationTitle("Ideas")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button(action: {
                     showAddIdeaView = true
                 }) {
                     Image(systemName: "plus")
                 }
-                
-                EditButton()
             }
         }
         .sheet(isPresented: $showAddIdeaView) {
-            AddIdeaView(idea: nil) { idea in
+            AddIdeaView { idea in
                 store.add(idea)
             }
+        }
+        .sheet(item: $selectedIdea) { idea in
+            AddIdeaView(idea: idea)
         }
     }
 }

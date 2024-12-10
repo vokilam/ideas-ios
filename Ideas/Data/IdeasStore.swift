@@ -18,6 +18,10 @@ class IdeasStore {
     func remove(atOffset offset: IndexSet) {
         ideas.remove(atOffsets: offset)
     }
+    
+    func remove(idea: Idea) {
+        ideas.removeAll(where: { $0.id == idea.id })
+    }
 }
 
 extension IdeasStore {

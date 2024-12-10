@@ -17,12 +17,20 @@ struct AddIdeaView: View {
     var idea: Idea?
     private let onAdd: (Idea) -> Void
     
-    init(idea: Idea?, onAdd: @escaping (Idea) -> Void = { _ in }) {
+    private init(idea: Idea?, onAdd: @escaping (Idea) -> Void = { _ in }) {
         self.idea = idea
         self.onAdd = onAdd
         
         self.title = idea?.title ?? ""
         self.description = idea?.description ?? ""
+    }
+    
+    init (onAdd: @escaping (Idea) -> Void = { _ in }) {
+        self.init(idea: nil, onAdd: onAdd)
+    }
+    
+    init(idea: Idea) {
+        self.init(idea: idea, onAdd: { _ in })
     }
     
     var body: some View {
@@ -60,5 +68,5 @@ struct AddIdeaView: View {
 }
 
 #Preview {
-    AddIdeaView(idea: nil)
+    AddIdeaView() { _ in }
 }
