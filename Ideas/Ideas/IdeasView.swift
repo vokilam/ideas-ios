@@ -22,20 +22,25 @@ struct IdeasView: View {
         NavigationStack {
             ZStack {
                 if (store.ideas.isEmpty) {
-                    ContentUnavailableView("No ideas", systemImage: "star", description: Text("You don't have any ideas yet. Tap the + button to add one."))
+                    ContentUnavailableView(
+                        "No ideas",
+                        systemImage: "star",
+                        description: Text("You don't have any ideas yet. Tap the + button to add one.")
+                    )
                 } else {
                     List {
                         ForEach(store.ideas) { idea in
                             NavigationLink {
+                                let _ = print("IdeasView: create details of \(idea.title)")
                                 LazyView(
-                                    IdeaDetailsView(idea: .constant(idea))
+                                    IdeaDetailsView(idea: idea)
                                 )
                             } label: {
                                 Text(idea.title)
                             }
                         }
                         .onDelete { indexSet in
-                            store.ideas.remove(atOffsets: indexSet)
+                            store.remove(atOffset: indexSet)
                         }
                     }
                     
@@ -53,7 +58,9 @@ struct IdeasView: View {
             }
         }
         .sheet(isPresented: $showAddIdeaView) {
-            AddIdeaView(idea: nil)
+            AddIdeaView(idea: nil) { idea in
+                store.add(idea)
+            }
         }
     }
 }

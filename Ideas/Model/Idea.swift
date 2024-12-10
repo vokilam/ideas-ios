@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct Idea: Identifiable, Equatable {
+@Observable
+class Idea: Identifiable {
     let id: String
-    let title: String
-    let description: String
+    var title: String
+    var description: String
     let creationDate: Date
     let rating: Int
     

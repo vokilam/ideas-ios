@@ -9,12 +9,11 @@ import SwiftUI
 
 struct IdeaDetailsView: View {
     
-    // TODO: although we do not mutate `idea` property, it is defined as binding because we want to get updates of this property when it is edited from AddIdeaView
-    @Binding var idea: Idea
-    @State private var editableIdea: Idea?
+    private let idea: Idea
+    @State private var shouldEditIdea = false
     
-    init(idea: Binding<Idea>) {
-        self._idea = idea
+    init(idea: Idea) {
+        self.idea = idea
         print("IdeaDetailsView body")
     }
     
@@ -32,13 +31,13 @@ struct IdeaDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editableIdea = idea
+                    shouldEditIdea = true
                 } label: {
                     Image(systemName: "square.and.pencil")
                 }
             }
         }
-        .sheet(item: $editableIdea) { idea in
+        .sheet(isPresented: $shouldEditIdea) {
             AddIdeaView(idea: idea)
         }
     }
@@ -46,6 +45,6 @@ struct IdeaDetailsView: View {
 
 #Preview {
     NavigationStack {
-        IdeaDetailsView(idea: .constant(MockData.sampleIdea))
+        IdeaDetailsView(idea: MockData.sampleIdea)
     }
 }

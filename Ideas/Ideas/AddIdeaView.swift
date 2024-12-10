@@ -10,22 +10,19 @@ import SwiftUI
 struct AddIdeaView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @Environment(IdeasStore.self) private var store
     
     @State private var title: String
     @State private var description: String
     
-    let idea: Idea?
+    var idea: Idea?
+    private let onAdd: (Idea) -> Void
     
-    init(idea: Idea?) {
+    init(idea: Idea?, onAdd: @escaping (Idea) -> Void = { _ in }) {
         self.idea = idea
-        if let idea = idea {
-            self.title = idea.title
-            self.description = idea.description
-        } else {
-            self.title = ""
-            self.description = ""
-        }
+        self.onAdd = onAdd
+        
+        self.title = idea?.title ?? ""
+        self.description = idea?.description ?? ""
     }
     
     var body: some View {
@@ -35,25 +32,18 @@ struct AddIdeaView: View {
                 TextField("Description", text: $description, axis: .vertical)
                     .lineLimit(3...5) // TODO: make it work
             }
-            .navigationTitle("Add Idea")
+            .navigationTitle("\(idea == nil ? "Add" : "Edit") Idea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         if let idea = idea {
-                            if let index = store.ideas.firstIndex(where: { $0.id == idea.id }) {
-                                // TODO: idea object is copied, structs are not easy to copy, so we need to find a better way
-                                store.ideas[index] = Idea(
-                                    id: idea.id,
-                                    title: title,
-                                    description: description,
-                                    creationDate: idea.creationDate,
-                                    rating: idea.rating
-                                )
-                            }
+                            idea.title = title
+                            idea.description = description
                         } else {
-                            store.ideas.append(Idea(title: title, description: description))
+                            onAdd(Idea(title: title, description: description))
                         }
+                        
                         dismiss()
                     }
                     .disabled(title.isEmpty || description.isEmpty)
@@ -70,5 +60,5 @@ struct AddIdeaView: View {
 }
 
 #Preview {
-    AddIdeaView(idea: nil).environment(IdeasStore())
+    AddIdeaView(idea: nil)
 }
