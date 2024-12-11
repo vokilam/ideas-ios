@@ -24,3 +24,16 @@ class Idea: Identifiable {
         self.rating = rating
     }
 }
+
+@Observable
+class Project: Identifiable {
+    let id: String
+    var name: String
+    var ideas = [Idea]()
+    
+    init(id: String = UUID().uuidString, name: String, ideas: [Idea] = []) {
+        self.id = id
+        self.name = name
+        self.ideas = ideas
+    }
+}

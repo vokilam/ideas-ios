@@ -38,7 +38,7 @@ struct IdeaDetailsView: View {
             }
         }
         .sheet(isPresented: $shouldEditIdea) {
-            AddIdeaView(idea: idea)
+            AdditIdeaView(idea: idea)
         }
     }
 }

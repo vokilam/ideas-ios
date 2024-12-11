@@ -34,5 +34,14 @@ struct MockData {
             description: "An app that converts text to image using AI. AI converts text to image. The app then shows the image."
         )
     ]
+    
+    static let projects = [
+        Project(
+            name: "My project",
+            ideas: ideas
+        )
+    ]
+    
+    static let sampleProject = projects[0]
     static let sampleIdea = ideas[0]
 }

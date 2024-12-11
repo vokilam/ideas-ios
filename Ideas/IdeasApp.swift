@@ -26,7 +26,9 @@ struct IdeasApp: App {
     
     var body: some Scene {
         WindowGroup {
-            IdeasView()
+//            NavigationStack {
+                ProjectsView()
+//            }
         }
         .environment(store)
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddIdeaView: View {
+struct AdditIdeaView: View {
     
     @Environment(\.dismiss) private var dismiss
     
@@ -68,5 +68,5 @@ struct AddIdeaView: View {
 }
 
 #Preview {
-    AddIdeaView() { _ in }
+    AdditIdeaView() { _ in }
 }
