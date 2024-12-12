@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ProjectsView: View {
     @Environment(IdeasStore.self) private var store
+    @Environment(UserManager.self) private var userManager
     
     @State private var showAddProjectView = false
+    @State private var showUserView = false
     @State private var selectedProject: Project?
     
     var body: some View {
@@ -53,6 +55,12 @@ struct ProjectsView: View {
                 }) {
                     Image(systemName: "plus")
                 }
+                
+                Button(action: {
+                    showUserView.toggle()
+                }) {
+                    Image(systemName: "person")
+                }
             }
         }
         .fullScreenCover(isPresented: $showAddProjectView) {
@@ -61,9 +69,22 @@ struct ProjectsView: View {
         .fullScreenCover(item: $selectedProject) { project in
             AdditProjectView(project: project)
         }
+        .sheet(isPresented: $showUserView) {
+            VStack {
+                Text("User View")
+                    .font(.largeTitle)
+                Button("Log out") {
+                    Task {
+                        await userManager.logOut()
+                    }
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    ProjectsView().environment(IdeasStore.mocked)
+    ProjectsView()
+        .environment(IdeasStore.mocked)
+        .environment(UserManager.shared)
 }

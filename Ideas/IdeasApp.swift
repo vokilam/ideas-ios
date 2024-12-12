@@ -26,10 +26,9 @@ struct IdeasApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            NavigationStack {
-                ProjectsView()
-//            }
+            RootView()
         }
         .environment(store)
+        .environment(UserManager.shared)
     }
 }
