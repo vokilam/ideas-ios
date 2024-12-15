@@ -22,11 +22,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct IdeasApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var store = IdeasStore.mocked
+    @State private var store = IdeasStore()
     
     var body: some Scene {
         WindowGroup {
             RootView()
+                .task {
+                    await store.loadProjects()
+                }
         }
         .environment(store)
         .environment(UserManager.shared)
