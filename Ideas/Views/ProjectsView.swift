@@ -18,31 +18,49 @@ struct ProjectsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if store.projects.isEmpty {
+                switch store.projects {
+                case .idle:
                     ContentUnavailableView(
                         "No projects",
                         systemImage: "star",
                         description: Text("You don't have any projects yet. Tap the + button to create one.")
                     )
-                } else {
-                    List(store.projects) { project in
-                        NavigationLink {
-                            LazyView(IdeasView(project))
-                        } label: {
-                            Text(project.name)
+                case .loading:
+                    ProgressView()
+                        .controlSize(.extraLarge)
+                case .failure(let error):
+                    Text(error.localizedDescription)
+                        .foregroundColor(.red)
+                case .success(let projects):
+                    if projects.isEmpty {
+                        ContentUnavailableView(
+                            "No projects",
+                            systemImage: "star",
+                            description: Text("You don't have any projects yet. Tap the + button to create one.")
+                        )
+                    } else {
+                        List(projects) { project in
+                            NavigationLink {
+                                LazyView(IdeasView(project))
+                            } label: {
+                                Text(project.name)
+                            }
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    store.remove(project)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                                Button {
+                                    selectedProject = project
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                            }
                         }
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                store.remove(project)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                            Button {
-                                selectedProject = project
-                            } label: {
-                                Label("Edit", systemImage: "pencil")
-                            }
-                            .tint(.blue)
+                        .refreshable {
+                            await store.loadProjects()
                         }
                     }
                 }
@@ -61,6 +79,16 @@ struct ProjectsView: View {
                 }) {
                     Image(systemName: "person")
                 }
+            }
+            .onAppear {
+                print("Group onAppear")
+            }
+            .onDisappear {
+                print("Group onDisappear")
+            }
+            .task {
+                print("loadProjects()")
+                await store.loadProjects()
             }
         }
         .fullScreenCover(isPresented: $showAddProjectView) {

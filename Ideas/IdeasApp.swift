@@ -27,9 +27,6 @@ struct IdeasApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .task {
-                    await store.loadProjects()
-                }
         }
         .environment(store)
         .environment(UserManager.shared)

@@ -61,7 +61,7 @@ class FirebaseDatabaseManager {
     
     private init() {}
     
-    func fetchProjects() async throws -> [Project] {
+func fetchProjects() async throws -> [Project] {
         let dbRef = Database.database().reference()
 //        guard let userId = Auth.auth().currentUser?.uid else { return [] }
         let userId = "userId1"
