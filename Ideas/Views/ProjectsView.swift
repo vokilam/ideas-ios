@@ -92,10 +92,16 @@ struct ProjectsView: View {
             }
         }
         .fullScreenCover(isPresented: $showAddProjectView) {
-            AdditProjectView(onAdd: store.add)
+            AdditProjectView(onAdd: { project in
+                Task { await store.add(project) }
+            })
+            EmptyView()
         }
         .fullScreenCover(item: $selectedProject) { project in
-            AdditProjectView(project: project)
+            AdditProjectView(project: project, onEdit: { project in
+                Task { await store.update(project) }
+            })
+            EmptyView()
         }
         .sheet(isPresented: $showUserView) {
             VStack {

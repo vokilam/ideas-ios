@@ -38,7 +38,9 @@ struct MockData {
     static let projects = [
         Project(
             name: "My project",
-            ideas: ideas
+            owner: "userId1",
+            ideas: ideas,
+            collaborators: nil
         )
     ]
     

@@ -13,9 +13,26 @@ class IdeasStore {
     
     private let databaseManager = FirebaseDatabaseManager.shared
     
-    func add(_ project: Project) {
-        guard case .success(var projects) = self.projects else { return }
-        projects.append(project)
+    func add(_ project: Project) async -> Void {
+        guard case .success = self.projects else { return }
+        
+        do {
+            try await databaseManager.createProject(project)
+            await loadProjects()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func update(_ project: Project) async -> Void {
+        guard case .success = self.projects else { return }
+        
+        do {
+            try await databaseManager.updateProject(project)
+            await loadProjects()
+        } catch {
+            print(error)
+        }
     }
     
     func remove(_ project: Project) {

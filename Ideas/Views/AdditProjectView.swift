@@ -14,10 +14,12 @@ struct AdditProjectView: View {
     
     let project: Project?
     private let onAdd: (Project) -> Void
+    private let onEdit: (Project) -> Void
     
-    init(project: Project?, onAdd: @escaping (Project) -> Void = { _ in }) {
+    init(project: Project?, onAdd: @escaping (Project) -> Void = { _ in }, onEdit: @escaping (Project) -> Void = { _ in }) {
         self.project = project
         self.onAdd = onAdd
+        self.onEdit = onEdit
         self.name = project?.name ?? ""
     }
     
@@ -37,8 +39,9 @@ struct AdditProjectView: View {
                     Button("Save") {
                         if let project {
                             project.name = name
+                            onEdit(project)
                         } else {
-                            onAdd(Project(name: name))
+                            onAdd(Project(name: name, owner: "userId1"))
                         }
                         dismiss()
                     }

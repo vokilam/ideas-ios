@@ -30,10 +30,14 @@ class Project: Identifiable {
     let id: String
     var name: String
     var ideas = [Idea]()
+    let owner: String
+    let collaborators: [String]?
     
-    init(id: String = UUID().uuidString, name: String, ideas: [Idea] = []) {
+    init(id: String = UUID().uuidString, name: String, owner: String, ideas: [Idea] = [], collaborators: [String]? = nil) {
         self.id = id
         self.name = name
         self.ideas = ideas
+        self.owner = owner
+        self.collaborators = collaborators
     }
 }
